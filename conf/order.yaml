@@ -11,7 +11,7 @@ client:
 
   # Which organization does this application instance belong to? The value must be the name of an org
   # defined under "organizations"
-  organization: OrgCredit
+  organization: OrgOrder
 
   logging:
     level: info
@@ -58,7 +58,7 @@ client:
 
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
-    path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config
+    path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config
 
   # Some SDKs support pluggable KV stores, the properties under "credentialStore"
   # are implementation specific
@@ -98,7 +98,7 @@ client:
 #
 channels:
   # name of the channel
-  credit:
+  order:
     # Required. list of orderers designated by the application to use for transactions on this
     # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
     # operational decisions to share loads from applications among the orderers.  The values must
@@ -110,7 +110,7 @@ channels:
 
     # Required. list of peers from participating orgs
     peers:
-      peer0.orgcredit.house.com:
+      peer0.orgorder.house.com:
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
         # have the chaincode installed. The app can also use this property to decide which peers
         # to send the chaincode install request. Default: true
@@ -130,7 +130,7 @@ channels:
         # Default: true
         eventSource: true
 
-      peer1.orgcredit.house.com:
+      peer1.orgorder.house.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
@@ -211,12 +211,12 @@ channels:
 # list of participating organizations in this network
 #
 organizations:
-  OrgCredit:
-    mspid: OrgCreditMSP
-    cryptoPath: peerOrganizations/orgcredit.house.com/users/User1@orgcredit.house.com/msp
+  OrgOrder:
+    mspid: OrgOrderMSP
+    cryptoPath: peerOrganizations/orgorder.house.com/users/User1@orgorder.house.com/msp
     peers:
-      - peer0.orgcredit.house.com
-      - peer1.orgcredit.house.com
+      - peer0.orgorder.house.com
+      - peer1.orgorder.house.com
 
     # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
     # network. Typically certificates provisioning is done in a separate process outside of the
@@ -224,7 +224,7 @@ organizations:
     # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
     # Fabric-CA servers.
     certificateAuthorities:
-      - ca_OrgCredit
+      - ca_OrgOrder
 
 #
 # List of orderers to send transaction and channel create/update requests to. For the time
@@ -251,7 +251,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/ordererOrganizations/house.com/tlsca/tlsca.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/ordererOrganizations/house.com/tlsca/tlsca.house.com-cert.pem
 
   orderer1.house.com:
     url: grpcs://orderer1.house.com:8050
@@ -263,21 +263,21 @@ orderers:
       fail-fast: false
       allow-insecure: false
     tlsCACerts:
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/ordererOrganizations/house.com/tlsca/tlsca.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/ordererOrganizations/house.com/tlsca/tlsca.house.com-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.orgcredit.house.com:
+  peer0.orgorder.house.com:
     # this URL is used to send endorsement and query requests
-    url: grpcs://peer0.orgcredit.house.com:11051
+    url: grpcs://peer0.orgorder.house.com:11051
     # eventUrl is only needed when using eventhub (default is delivery service)
-    eventUrl: grpcs://peer0.orgcredit.house.com:11053
+    eventUrl: grpcs://peer0.orgorder.house.com:11053
 
     grpcOptions:
-      ssl-target-name-override: peer0.orgcredit.house.com
+      ssl-target-name-override: peer0.orgorder.house.com
       # grpc.http2.keepalive_time: 15
       # sslProvider: openSSL
       # negotiationType: TLS
@@ -294,13 +294,13 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/peerOrganizations/orgcredit.house.com/tlsca/tlsca.orgcredit.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/peerOrganizations/orgorder.house.com/tlsca/tlsca.orgorder.house.com-cert.pem
 
-  peer1.orgcredit.house.com:
-    url: grpcs://peer1.orgcredit.house.com:12051
-    eventUrl: grpcs://peer1.orgcredit.house.com:12053
+  peer1.orgorder.house.com:
+    url: grpcs://peer1.orgorder.house.com:12051
+    eventUrl: grpcs://peer1.orgorder.house.com:12053
     grpcOptions:
-      ssl-target-name-override: peer1.orgcredit.house.com
+      ssl-target-name-override: peer1.orgorder.house.com
       # grpc.http2.keepalive_time: 15
       # sslProvider: openSSL
       # negotiationType: TLS
@@ -311,7 +311,7 @@ peers:
       fail-fast: false
       allow-insecure: false
     tlsCACerts:
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/peerOrganizations/orgcredit.house.com/tlsca/tlsca.orgcredit.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/peerOrganizations/orgorder.house.com/tlsca/tlsca.orgorder.house.com-cert.pem
 
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
@@ -319,11 +319,11 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca_OrgCredit:
-    url: https://ca_OrgCredit:9054
+  ca_OrgOrder:
+    url: https://ca_OrgOrder:9054
     tlsCACerts:
       # Certificate location absolute path
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/peerOrganizations/orgcredit.house.com/ca/ca.orgcredit.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/peerOrganizations/orgorder.house.com/ca/ca.orgorder.house.com-cert.pem
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -331,21 +331,21 @@ certificateAuthorities:
       enrollId: admin
       enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca_OrgCredit
+    caName: ca_OrgOrder
 
 entityMatchers:
   peer:
-    - pattern: (\w*)peer0.orgcredit.house.com(\w*)
-      urlSubstitutionExp: peer0.orgcredit.house.com:11051
-      eventUrlSubstitutionExp: peer0.orgcredit.house.com:11053
-      sslTargetOverrideUrlSubstitutionExp: peer0.orgcredit.house.com
-      mappedHost: peer0.orgcredit.house.com
+    - pattern: (\w*)peer0.orgorder.house.com(\w*)
+      urlSubstitutionExp: peer0.orgorder.house.com:11051
+      eventUrlSubstitutionExp: peer0.orgorder.house.com:11053
+      sslTargetOverrideUrlSubstitutionExp: peer0.orgorder.house.com
+      mappedHost: peer0.orgorder.house.com
 
-    - pattern: (\w*)peer1.orgcredit.house.com(\w*)
-      urlSubstitutionExp: peer1.orgcredit.house.com:12051
-      eventUrlSubstitutionExp: peer1.orgcredit.house.com:12053
-      sslTargetOverrideUrlSubstitutionExp: peer1.orgcredit.house.com
-      mappedHost: peer1.orgcredit.house.com
+    - pattern: (\w*)peer1.orgorder.house.com(\w*)
+      urlSubstitutionExp: peer1.orgorder.house.com:12051
+      eventUrlSubstitutionExp: peer1.orgorder.house.com:12053
+      sslTargetOverrideUrlSubstitutionExp: peer1.orgorder.house.com
+      mappedHost: peer1.orgorder.house.com
 
   orderer:
     - pattern: (\w*)orderer0.house.com(\w*)
@@ -359,6 +359,6 @@ entityMatchers:
       mappedHost: orderer1.house.com
 
   certificateAuthorities:
-    - pattern: (\w*)ca_OrgCredit(\w*)
-      urlSubstitutionExp: http://ca_OrgCredit:9054
-      mappedHost: ca_OrgCredit
+    - pattern: (\w*)ca_OrgOrder(\w*)
+      urlSubstitutionExp: http://ca_OrgOrder:9054
+      mappedHost: ca_OrgOrder

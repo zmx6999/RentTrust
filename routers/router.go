@@ -1,17 +1,17 @@
 package routers
 
 import (
-	"190216/controllers"
+	"190221/controllers"
 	"github.com/astaxie/beego"
 )
 
 func init() {
-    beego.Router("/auth/check",&controllers.AuthController{},"get:Check")
-	beego.Router("/auth/add",&controllers.AuthController{},"post:Add")
+    beego.Router("/house/add",&controllers.HouseController{},"post:AddHouseInfo")
+	beego.Router("/house/info",&controllers.HouseController{},"get:GetHouseInfo")
 
-	beego.Router("/cert/check",&controllers.CertController{},"get:Check")
-	beego.Router("/cert/add",&controllers.CertController{},"post:Add")
+	beego.Router("/area/add",&controllers.AreaController{},"post:AddAreaInfo")
+	beego.Router("/area/info",&controllers.AreaController{},"get:GetAreaInfo")
 
-	beego.Router("/credit/check",&controllers.CreditController{},"get:Check")
-	beego.Router("/credit/add",&controllers.CreditController{},"post:Add")
+	beego.Router("/order/add",&controllers.OrderController{},"post:AddOrderInfo")
+	beego.Router("/order/list",&controllers.OrderController{},"get:GetOrderInfo")
 }

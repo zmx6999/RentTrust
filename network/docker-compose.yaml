@@ -1,0 +1,271 @@
+
+version: '2'
+
+services:
+  ca_OrgHouse:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca_OrgHouse
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.orghouse.house.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/446f7b3934bae4a74e934eff3e8923ec91d9e91901c87416148e27a82cdd1f23_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/orghouse.house.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_OrgHouse
+
+  ca_OrgArea:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca_OrgArea
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.orgarea.house.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/54f055847bb45b4070778c7d2c5b1b24ff406d7a069c3826b5485f17a402d95e_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/orgarea.house.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_OrgArea
+
+  peer0.orghouse.house.com:
+    container_name: peer0.orghouse.house.com
+    image: hyperledger/fabric-peer
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_default
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_PEER_ID=peer0.orghouse.house.com
+      - CORE_PEER_ADDRESS=peer0.orghouse.house.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.orghouse.house.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orghouse.house.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orghouse.house.com:7051
+      - CORE_PEER_LOCALMSPID=OrgHouseMSP
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/orghouse.house.com/peers/peer0.orghouse.house.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/orghouse.house.com/peers/peer0.orghouse.house.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - "7051:7051"
+      - "7052:7052"
+      - "7053:7053"
+    extra_hosts:
+      - "zookeeper0:139.180.138.179"
+      - "kafka0:139.180.138.179"
+      - "orderer0.house.com:139.180.138.179"
+      - "zookeeper1:45.77.251.25"
+      - "kafka1:45.77.251.25"
+      - "orderer1.house.com:45.77.251.25"
+      - "zookeeper2:45.77.250.9"
+      - "kafka2:45.77.250.9"
+      - "peer0.orghouse.house.com:45.77.250.9"
+      - "peer1.orghouse.house.com:45.77.250.9"
+      - "peer0.orgarea.house.com:45.77.250.9"
+      - "peer1.orgarea.house.com:45.77.250.9"
+      - "kafka3:139.180.146.33"
+      - "peer0.orgorder.house.com:139.180.146.33"
+      - "peer1.orgorder.house.com:139.180.146.33"
+
+  peer1.orghouse.house.com:
+    container_name: peer1.orghouse.house.com
+    image: hyperledger/fabric-peer
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_default
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_PEER_ID=peer1.orghouse.house.com
+      - CORE_PEER_ADDRESS=peer1.orghouse.house.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.orghouse.house.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.orghouse.house.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orghouse.house.com:7051
+      - CORE_PEER_LOCALMSPID=OrgHouseMSP
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/orghouse.house.com/peers/peer1.orghouse.house.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/orghouse.house.com/peers/peer1.orghouse.house.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - "8051:7051"
+      - "8052:7052"
+      - "8053:7053"
+    extra_hosts:
+      - "zookeeper0:139.180.138.179"
+      - "kafka0:139.180.138.179"
+      - "orderer0.house.com:139.180.138.179"
+      - "zookeeper1:45.77.251.25"
+      - "kafka1:45.77.251.25"
+      - "orderer1.house.com:45.77.251.25"
+      - "zookeeper2:45.77.250.9"
+      - "kafka2:45.77.250.9"
+      - "peer0.orghouse.house.com:45.77.250.9"
+      - "peer1.orghouse.house.com:45.77.250.9"
+      - "peer0.orgarea.house.com:45.77.250.9"
+      - "peer1.orgarea.house.com:45.77.250.9"
+      - "kafka3:139.180.146.33"
+      - "peer0.orgorder.house.com:139.180.146.33"
+      - "peer1.orgorder.house.com:139.180.146.33"
+
+  peer0.orgarea.house.com:
+    container_name: peer0.orgarea.house.com
+    image: hyperledger/fabric-peer
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_default
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_PEER_ID=peer0.orgarea.house.com
+      - CORE_PEER_ADDRESS=peer0.orgarea.house.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.orgarea.house.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orgarea.house.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orgarea.house.com:7051
+      - CORE_PEER_LOCALMSPID=OrgAreaMSP
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/orgarea.house.com/peers/peer0.orgarea.house.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/orgarea.house.com/peers/peer0.orgarea.house.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - "9051:7051"
+      - "9052:7052"
+      - "9053:7053"
+    extra_hosts:
+      - "zookeeper0:139.180.138.179"
+      - "kafka0:139.180.138.179"
+      - "orderer0.house.com:139.180.138.179"
+      - "zookeeper1:45.77.251.25"
+      - "kafka1:45.77.251.25"
+      - "orderer1.house.com:45.77.251.25"
+      - "zookeeper2:45.77.250.9"
+      - "kafka2:45.77.250.9"
+      - "peer0.orghouse.house.com:45.77.250.9"
+      - "peer1.orghouse.house.com:45.77.250.9"
+      - "peer0.orgarea.house.com:45.77.250.9"
+      - "peer1.orgarea.house.com:45.77.250.9"
+      - "kafka3:139.180.146.33"
+      - "peer0.orgorder.house.com:139.180.146.33"
+      - "peer1.orgorder.house.com:139.180.146.33"
+
+  peer1.orgarea.house.com:
+    container_name: peer1.orgarea.house.com
+    image: hyperledger/fabric-peer
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_default
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_PEER_ID=peer1.orgarea.house.com
+      - CORE_PEER_ADDRESS=peer1.orgarea.house.com:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.orgarea.house.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.orgarea.house.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orgarea.house.com:7051
+      - CORE_PEER_LOCALMSPID=OrgAreaMSP
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/orgarea.house.com/peers/peer1.orgarea.house.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/orgarea.house.com/peers/peer1.orgarea.house.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - "10051:7051"
+      - "10052:7052"
+      - "10053:7053"
+    extra_hosts:
+      - "zookeeper0:139.180.138.179"
+      - "kafka0:139.180.138.179"
+      - "orderer0.house.com:139.180.138.179"
+      - "zookeeper1:45.77.251.25"
+      - "kafka1:45.77.251.25"
+      - "orderer1.house.com:45.77.251.25"
+      - "zookeeper2:45.77.250.9"
+      - "kafka2:45.77.250.9"
+      - "peer0.orghouse.house.com:45.77.250.9"
+      - "peer1.orghouse.house.com:45.77.250.9"
+      - "peer0.orgarea.house.com:45.77.250.9"
+      - "peer1.orgarea.house.com:45.77.250.9"
+      - "kafka3:139.180.146.33"
+      - "peer0.orgorder.house.com:139.180.146.33"
+      - "peer1.orgorder.house.com:139.180.146.33"
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:$IMAGE_TAG
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.orghouse.house.com:7051
+      - CORE_PEER_LOCALMSPID=OrgHouseMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orghouse.house.com/peers/peer0.orghouse.house.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orghouse.house.com/peers/peer0.orghouse.house.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orghouse.house.com/peers/peer0.orghouse.house.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orghouse.house.com/users/Admin@orghouse.house.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./../chaincode/:/opt/gopath/src/github.com/chaincode
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - "peer0.orghouse.house.com"
+      - "peer1.orghouse.house.com"
+      - "peer0.orgarea.house.com"
+      - "peer1.orgarea.house.com"
+    extra_hosts:
+      - "zookeeper0:139.180.138.179"
+      - "kafka0:139.180.138.179"
+      - "orderer0.house.com:139.180.138.179"
+      - "zookeeper1:45.77.251.25"
+      - "kafka1:45.77.251.25"
+      - "orderer1.house.com:45.77.251.25"
+      - "zookeeper2:45.77.250.9"
+      - "kafka2:45.77.250.9"
+      - "peer0.orghouse.house.com:45.77.250.9"
+      - "peer1.orghouse.house.com:45.77.250.9"
+      - "peer0.orgarea.house.com:45.77.250.9"
+      - "peer1.orgarea.house.com:45.77.250.9"
+      - "kafka3:139.180.146.33"
+      - "peer0.orgorder.house.com:139.180.146.33"
+      - "peer1.orgorder.house.com:139.180.146.33"

@@ -1,0 +1,31 @@
+{
+  "domain": "house.com",
+  "channels": [
+    {
+      "channel_name": "area",
+      "orgs": [
+        {
+          "org_name": "OrgArea",
+          "peers": [
+            {
+              "peer_name": "peer0",
+              "port": "9051"
+            },
+            {
+              "peer_name": "peer1",
+              "port": "10051"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "chaincode_name": "area",
+  "chaincode_version": "1.0",
+  "orderer": {
+    "orderer_name": "orderer0",
+    "port": "7050"
+  },
+  "endorse": "AND ('OrgAreaMSP.member')",
+  "cli_name": "cli"
+}

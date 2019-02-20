@@ -1,0 +1,82 @@
+{
+  "domain": "house.com",
+  "channels": [
+    {
+      "channel_name": "house",
+      "orgs": [
+        {
+          "org_name": "OrgHouse",
+          "peers": [
+            {
+              "peer_name": "peer0",
+              "port": "7051"
+            },
+            {
+              "peer_name": "peer1",
+              "port": "8051"
+            }
+          ],
+          "anchor_peers": [
+            {
+              "peer_name": "peer0",
+              "port": "7051"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "channel_name": "area",
+      "orgs": [
+        {
+          "org_name": "OrgArea",
+          "peers": [
+            {
+              "peer_name": "peer0",
+              "port": "9051"
+            },
+            {
+              "peer_name": "peer1",
+              "port": "10051"
+            }
+          ],
+          "anchor_peers": [
+            {
+              "peer_name": "peer0",
+              "port": "9051"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "channel_name": "order",
+      "orgs": [
+        {
+          "org_name": "OrgOrder",
+          "peers": [
+            {
+              "peer_name": "peer0",
+              "port": "11051"
+            },
+            {
+              "peer_name": "peer1",
+              "port": "12051"
+            }
+          ],
+          "anchor_peers": [
+            {
+              "peer_name": "peer0",
+              "port": "11051"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "orderer": {
+    "orderer_name": "orderer0",
+    "port": "7050"
+  },
+  "cli_name": "cli"
+}

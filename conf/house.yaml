@@ -11,7 +11,7 @@ client:
 
   # Which organization does this application instance belong to? The value must be the name of an org
   # defined under "organizations"
-  organization: OrgCert
+  organization: OrgHouse
 
   logging:
     level: info
@@ -58,7 +58,7 @@ client:
 
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
-    path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config
+    path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config
 
   # Some SDKs support pluggable KV stores, the properties under "credentialStore"
   # are implementation specific
@@ -98,7 +98,7 @@ client:
 #
 channels:
   # name of the channel
-  cert:
+  house:
     # Required. list of orderers designated by the application to use for transactions on this
     # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
     # operational decisions to share loads from applications among the orderers.  The values must
@@ -110,7 +110,7 @@ channels:
 
     # Required. list of peers from participating orgs
     peers:
-      peer0.orgcert.house.com:
+      peer0.orghouse.house.com:
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
         # have the chaincode installed. The app can also use this property to decide which peers
         # to send the chaincode install request. Default: true
@@ -130,7 +130,7 @@ channels:
         # Default: true
         eventSource: true
 
-      peer1.orgcert.house.com:
+      peer1.orghouse.house.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
@@ -211,12 +211,12 @@ channels:
 # list of participating organizations in this network
 #
 organizations:
-  OrgCert:
-    mspid: OrgCertMSP
-    cryptoPath: peerOrganizations/orgcert.house.com/users/User1@orgcert.house.com/msp
+  OrgHouse:
+    mspid: OrgHouseMSP
+    cryptoPath: peerOrganizations/orghouse.house.com/users/User1@orghouse.house.com/msp
     peers:
-      - peer0.orgcert.house.com
-      - peer1.orgcert.house.com
+      - peer0.orghouse.house.com
+      - peer1.orghouse.house.com
 
     # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
     # network. Typically certificates provisioning is done in a separate process outside of the
@@ -224,7 +224,7 @@ organizations:
     # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
     # Fabric-CA servers.
     certificateAuthorities:
-      - ca_OrgCert
+      - ca_OrgHouse
 
 #
 # List of orderers to send transaction and channel create/update requests to. For the time
@@ -251,7 +251,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/ordererOrganizations/house.com/tlsca/tlsca.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/ordererOrganizations/house.com/tlsca/tlsca.house.com-cert.pem
 
   orderer1.house.com:
     url: grpcs://orderer1.house.com:8050
@@ -263,21 +263,21 @@ orderers:
       fail-fast: false
       allow-insecure: false
     tlsCACerts:
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/ordererOrganizations/house.com/tlsca/tlsca.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/ordererOrganizations/house.com/tlsca/tlsca.house.com-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.orgcert.house.com:
+  peer0.orghouse.house.com:
     # this URL is used to send endorsement and query requests
-    url: grpcs://peer0.orgcert.house.com:9051
+    url: grpcs://peer0.orghouse.house.com:7051
     # eventUrl is only needed when using eventhub (default is delivery service)
-    eventUrl: grpcs://peer0.orgcert.house.com:9053
+    eventUrl: grpcs://peer0.orghouse.house.com:7053
 
     grpcOptions:
-      ssl-target-name-override: peer0.orgcert.house.com
+      ssl-target-name-override: peer0.orghouse.house.com
       # grpc.http2.keepalive_time: 15
       # sslProvider: openSSL
       # negotiationType: TLS
@@ -294,13 +294,13 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/peerOrganizations/orgcert.house.com/tlsca/tlsca.orgcert.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/peerOrganizations/orghouse.house.com/tlsca/tlsca.orghouse.house.com-cert.pem
 
-  peer1.orgcert.house.com:
-    url: grpcs://peer1.orgcert.house.com:10051
-    eventUrl: grpcs://peer1.orgcert.house.com:10053
+  peer1.orghouse.house.com:
+    url: grpcs://peer1.orghouse.house.com:8051
+    eventUrl: grpcs://peer1.orghouse.house.com:8053
     grpcOptions:
-      ssl-target-name-override: peer1.orgcert.house.com
+      ssl-target-name-override: peer1.orghouse.house.com
       # grpc.http2.keepalive_time: 15
       # sslProvider: openSSL
       # negotiationType: TLS
@@ -311,7 +311,7 @@ peers:
       fail-fast: false
       allow-insecure: false
     tlsCACerts:
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/peerOrganizations/orgcert.house.com/tlsca/tlsca.orgcert.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/peerOrganizations/orghouse.house.com/tlsca/tlsca.orghouse.house.com-cert.pem
 
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
@@ -319,11 +319,11 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca_OrgCert:
-    url: https://ca_OrgCert:8054
+  ca_OrgHouse:
+    url: https://ca_OrgHouse:7054
     tlsCACerts:
       # Certificate location absolute path
-      path: /root/fabric/scripts/fabric-samples/190216/network/crypto-config/peerOrganizations/orgcert.house.com/ca/ca.orgcert.house.com-cert.pem
+      path: /root/fabric/scripts/fabric-samples/190221/network/crypto-config/peerOrganizations/orghouse.house.com/ca/ca.orghouse.house.com-cert.pem
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -331,21 +331,21 @@ certificateAuthorities:
       enrollId: admin
       enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca_OrgCert
+    caName: ca_OrgHouse
 
 entityMatchers:
   peer:
-    - pattern: (\w*)peer0.orgcert.house.com(\w*)
-      urlSubstitutionExp: peer0.orgcert.house.com:9051
-      eventUrlSubstitutionExp: peer0.orgcert.house.com:9053
-      sslTargetOverrideUrlSubstitutionExp: peer0.orgcert.house.com
-      mappedHost: peer0.orgcert.house.com
+    - pattern: (\w*)peer0.orghouse.house.com(\w*)
+      urlSubstitutionExp: peer0.orghouse.house.com:7051
+      eventUrlSubstitutionExp: peer0.orghouse.house.com:7053
+      sslTargetOverrideUrlSubstitutionExp: peer0.orghouse.house.com
+      mappedHost: peer0.orghouse.house.com
 
-    - pattern: (\w*)peer1.orgcert.house.com(\w*)
-      urlSubstitutionExp: peer1.orgcert.house.com:10051
-      eventUrlSubstitutionExp: peer1.orgcert.house.com:10053
-      sslTargetOverrideUrlSubstitutionExp: peer1.orgcert.house.com
-      mappedHost: peer1.orgcert.house.com
+    - pattern: (\w*)peer1.orghouse.house.com(\w*)
+      urlSubstitutionExp: peer1.orghouse.house.com:8051
+      eventUrlSubstitutionExp: peer1.orghouse.house.com:8053
+      sslTargetOverrideUrlSubstitutionExp: peer1.orghouse.house.com
+      mappedHost: peer1.orghouse.house.com
 
   orderer:
     - pattern: (\w*)orderer0.house.com(\w*)
@@ -359,6 +359,6 @@ entityMatchers:
       mappedHost: orderer1.house.com
 
   certificateAuthorities:
-    - pattern: (\w*)ca_OrgCert(\w*)
-      urlSubstitutionExp: http://ca_OrgCert:8054
-      mappedHost: ca_OrgCert
+    - pattern: (\w*)ca_OrgHouse(\w*)
+      urlSubstitutionExp: http://ca_OrgHouse:7054
+      mappedHost: ca_OrgHouse

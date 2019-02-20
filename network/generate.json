@@ -1,0 +1,60 @@
+{
+  "domain": "house.com",
+  "orderers": [
+    "orderer0",
+    "orderer1"
+  ],
+  "kafkas": [
+    "kafka0",
+    "kafka1",
+    "kafka2",
+    "kafka3"
+  ],
+  "peer_orgs": [
+    {
+      "org_name": "OrgHouse",
+      "peer_count": 2,
+      "user_count": 1,
+      "anchor_peers": [
+        "peer0"
+      ]
+    },
+    {
+      "org_name": "OrgArea",
+      "peer_count": 2,
+      "user_count": 1,
+      "anchor_peers": [
+        "peer0"
+      ]
+    },
+    {
+      "org_name": "OrgOrder",
+      "peer_count": 2,
+      "user_count": 1,
+      "anchor_peers": [
+        "peer0"
+      ]
+    }
+  ],
+  "genesis_profile": "ThreeOrgsOrdererGenesis",
+  "channels": [
+    {
+      "channel_name": "house",
+      "orgs": [
+        "OrgHouse"
+      ]
+    },
+    {
+      "channel_name": "area",
+      "orgs": [
+        "OrgArea"
+      ]
+    },
+    {
+      "channel_name": "order",
+      "orgs": [
+        "OrgOrder"
+      ]
+    }
+  ]
+}

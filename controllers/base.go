@@ -2,17 +2,17 @@ package controllers
 
 import "github.com/astaxie/beego"
 
+type ResponseJSON struct {
+	Code int
+	Msg string
+	Data interface{}
+}
+
 type BaseController struct {
 	beego.Controller
 }
 
-type ResponseJSON struct {
-	Code int
-	Msg interface{}
-}
-
-func (this *BaseController) handleResponse(code int,msg interface{})  {
-	this.Data["json"]=&ResponseJSON{Code:code,Msg:msg}
+func (this *BaseController) handleResponse(code int,msg string,data interface{})  {
+	this.Data["json"]=&ResponseJSON{code,msg,data}
 	this.ServeJSON()
 }
-
